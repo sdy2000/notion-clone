@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import { useScrollDirection } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { Logo } from ".";
@@ -15,7 +16,9 @@ const Navbar = () => {
       )}
     >
       <Logo />
-      <div className="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2"></div>
+      <div className="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2">
+        <ModeToggle />
+      </div>
     </div>
   );
 };
