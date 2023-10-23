@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { ThemeProvider } from "@/components/provider";
+import { ConvexClientProvider, ThemeProvider } from "@/components/provider";
 
 import "@/assets/styles/globals.css";
 
@@ -32,17 +32,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          storageKey="jotion-theme-2"
-        >
-          {children}
-        </ThemeProvider>
+        <ConvexClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="jotion-theme-2"
+          >
+            {children}
+          </ThemeProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

@@ -8,12 +8,14 @@ const Heroes = () => {
           <Image
             src="/documents.png"
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 400px"
             className="object-contain dark:hidden"
             alt="Documents"
           />
           <Image
             src="/documents-dark.png"
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 400px"
             className="object-contain hidden dark:block"
             alt="Documents"
           />
@@ -22,12 +24,14 @@ const Heroes = () => {
           <Image
             src="/reading.png"
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 400px"
             className="object-contain dark:hidden"
             alt="Reading"
           />
           <Image
             src="/reading-dark.png"
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 400px"
             className="object-contain hidden dark:block"
             alt="Reading"
           />
