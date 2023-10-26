@@ -1,15 +1,25 @@
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-
+import { useQuery, useMutation } from "convex/react";
+import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import {
+  ChevronsLeft,
+  MenuIcon,
+  PlusCircle,
+  Search,
+  Settings,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { UserItem } from ".";
+import { Item, UserItem } from ".";
+import { api } from "@/convex/_generated/api";
 
-const Navigation = () => {
+const Navigation = React.forwardRef(() => {
   const pathname = usePathname();
+  const documents = useQuery(api.documents.get);
+  const create = useMutation(api.documents.create);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const isResizingRef = useRef(false);
@@ -17,6 +27,8 @@ const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  //#region  Handle Navbar Resizing
 
   useEffect(() => {
     if (isMobile) {
@@ -95,6 +107,17 @@ const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
+  //#endregion
+
+  const handleCreate = () => {
+    const promise = create({ title: "Untitled" });
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note.",
+    });
+  };
 
   return (
     <>
@@ -118,9 +141,14 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
+          <Item label="Search" icon={Search} isSearch onClick={() => {}} />
+          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
-          <p>Documents</p>
+          {documents?.map((document) => (
+            <p key={document._id}>{document.title}</p>
+          ))}
         </div>
         <div
           onMouseDown={handleMouseDown}
@@ -148,5 +176,5 @@ const Navigation = () => {
       </div>
     </>
   );
-};
+});
 export default Navigation;
