@@ -1,6 +1,6 @@
 import React, { ElementRef, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -13,12 +13,11 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Item, UserItem } from ".";
+import { Item, UserItem, DocumentList } from ".";
 import { api } from "@/convex/_generated/api";
 
 const Navigation = React.forwardRef(() => {
   const pathname = usePathname();
-  const documents = useQuery(api.documents.get);
   const create = useMutation(api.documents.create);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -146,9 +145,7 @@ const Navigation = React.forwardRef(() => {
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
-          {documents?.map((document) => (
-            <p key={document._id}>{document.title}</p>
-          ))}
+          <DocumentList />
         </div>
         <div
           onMouseDown={handleMouseDown}
