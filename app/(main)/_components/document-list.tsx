@@ -23,38 +23,39 @@ const DocumentList = ({ parentDocumentId, level = 0 }: documentListProps) => {
   const router = useRouter();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  const onExpand = (documentId: string)=>{
-    setExpanded(prevExpanded=>({
-        ...prevExpanded,
-        [documentId]:!prevExpanded[documentId]
-    }))
-  }
+  const onExpand = (documentId: string) => {
+    setExpanded((prevExpanded) => ({
+      ...prevExpanded,
+      [documentId]: !prevExpanded[documentId],
+    }));
+  };
 
-  const documents = useQuery(api.documents.getSidebar,{
-    parentDocument:parentDocumentId
-  })
+  const documents = useQuery(api.documents.getSidebar, {
+    parentDocument: parentDocumentId,
+  });
 
-  const onRedirect = (documentId: string)=>{
-    router.push(`/documents/${documentId}`)
-  }
+  const onRedirect = (documentId: string) => {
+    router.push(`/documents/${documentId}`);
+  };
 
-  if (documents===undefined){
-    return(
-        <>
+  if (documents === undefined) {
+    return (
+      <>
         <Item.Skeleton level={level} />
-        {level===0&&(
-            <>
-        <Item.Skeleton level={level} />
-        <Item.Skeleton level={level} />
-        </>
+        {level === 0 && (
+          <>
+            <Item.Skeleton level={level} />
+            <Item.Skeleton level={level} />
+          </>
         )}
-        </>
-    )
+      </>
+    );
   }
-  return <>
+  return (
+    <>
       <p
         style={{
-          paddingLeft: level ? `${(level * 12) + 25}px` : undefined
+          paddingLeft: level ? `${level * 12 + 25}px` : undefined,
         }}
         className={cn(
           "hidden text-sm font-medium text-muted-foreground/80",
@@ -78,13 +79,11 @@ const DocumentList = ({ parentDocumentId, level = 0 }: documentListProps) => {
             expanded={expanded[document._id]}
           />
           {expanded[document._id] && (
-            <DocumentList
-              parentDocumentId={document._id}
-              level={level + 1}
-            />
+            <DocumentList parentDocumentId={document._id} level={level + 1} />
           )}
         </div>
       ))}
     </>
+  );
 };
 export default DocumentList;
