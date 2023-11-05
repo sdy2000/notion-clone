@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 
-import { ConvexClientProvider, ThemeProvider } from "@/components/provider";
+import {
+  ConvexClientProvider,
+  ModalProvider,
+  ThemeProvider,
+} from "@/components/provider";
 
 import "@/assets/styles/globals.css";
 
@@ -44,6 +48,7 @@ export default function RootLayout({
             storageKey="jotion-theme-2"
           >
             <Toaster position="bottom-center" />
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

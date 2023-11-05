@@ -23,10 +23,11 @@ import {
 } from "@/components/ui/popover";
 
 import { Item, UserItem, DocumentList, TrashBox } from ".";
-import { useSearch } from "@/hooks";
+import { useSearch, useSettings } from "@/hooks";
 
 const Navigation = React.forwardRef(() => {
   const search = useSearch();
+  const setting = useSettings();
   const pathname = usePathname();
   const create = useMutation(api.documents.create);
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -151,7 +152,7 @@ const Navigation = React.forwardRef(() => {
         <div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
-          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item label="Settings" icon={Settings} onClick={setting.onOpen} />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
