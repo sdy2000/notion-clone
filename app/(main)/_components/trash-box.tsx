@@ -12,6 +12,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { Input } from "@/components/ui/input";
 
 import { Spinner } from "@/components/spinner";
+import { ConfirmModal } from "@/components/modals";
 
 const TrashBox = () => {
   const router = useRouter();
@@ -81,6 +82,33 @@ const TrashBox = () => {
         <p className="hidden last:block text-xs text-center text-muted-foreground pb-2">
           No documents found.
         </p>
+        {filteredDocuments?.map((document) => (
+          <div
+            key={document._id}
+            role="button"
+            onClick={() => onClick(document._id)}
+            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary justify-between"
+          >
+            <span className="truncate pl-2">{document.title}</span>
+            <div className="flex items-center">
+              <div
+                onClick={(e) => onRestore(e, document._id)}
+                role="button"
+                className="rounded-sm p-2 hover:bg-neutral-200"
+              >
+                <Undo className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <ConfirmModal onConfirm={() => onRemove(document._id)}>
+                <div
+                  role="button"
+                  className="rounded-sm p-2 hover:bg-neutral-200"
+                >
+                  <Trash className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </ConfirmModal>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
