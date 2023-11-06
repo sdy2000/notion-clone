@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { MenuIcon } from "lucide-react";
-import { Title } from ".";
+import { Banner, Title } from ".";
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -47,6 +47,9 @@ const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
           <div className="flex items-center gap-x-2">Navbar</div>
         </div>
       </nav>
+      {document.isArchived&&(
+        <Banner documentId={document._id} />
+      )}
     </>
   );
 };
