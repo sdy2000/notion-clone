@@ -1,6 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import { useMutation, useQuery } from "convex/react";
+import dynamic from "next/dynamic";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -8,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import Toolbar from "@/components/toolbar";
 import Cover from "@/components/cover";
-import Editor from "@/components/editor";
 
 interface DocumentIdProps {
   params: {
@@ -17,6 +18,10 @@ interface DocumentIdProps {
 }
 
 const DocumentId = ({ params }: DocumentIdProps) => {
+  const Editor = useMemo(
+    () => dynamic(() => import("@/components/editor"), { ssr: false }),
+    []
+  );
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId,
   });
