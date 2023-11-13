@@ -11,10 +11,12 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Input } from "@/components/ui/input";
 
+import { useEdgeStore } from "@/lib/edgestore";
 import { Spinner } from "@/components/spinner";
 import { ConfirmModal } from "@/components/modals";
 
 const TrashBox = () => {
+  const { edgestore } = useEdgeStore();
   const router = useRouter();
   const params = useParams();
   const documents = useQuery(api.documents.getTrash);
@@ -45,7 +47,12 @@ const TrashBox = () => {
     });
   };
 
-  const onRemove = (documentId: Id<"documents">) => {
+  const onRemove = async (documentId: Id<"documents">, url?: string) => {
+    if (url) {
+      await edgestore.publicFiles.delete({
+        url: url,
+      });
+    }
     const promise = remove({ id: documentId });
 
     toast.promise(promise, {
@@ -98,7 +105,9 @@ const TrashBox = () => {
               >
                 <Undo className="h-4 w-4 text-muted-foreground" />
               </div>
-              <ConfirmModal onConfirm={() => onRemove(document._id)}>
+              <ConfirmModal
+                onConfirm={() => onRemove(document._id, document.coverImage)}
+              >
                 <div
                   role="button"
                   className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"

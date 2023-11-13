@@ -7,14 +7,17 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 
+import { useEdgeStore } from "@/lib/edgestore";
 import { ConfirmModal } from "@/components/modals";
 import { useRouter } from "next/navigation";
 
 interface BannerProps {
   documentId: Id<"documents">;
+  url?: string;
 }
 
-const Banner = ({ documentId }: BannerProps) => {
+const Banner = ({ documentId, url }: BannerProps) => {
+  const { edgestore } = useEdgeStore();
   const router = useRouter();
 
   const remove = useMutation(api.documents.remove);
@@ -30,7 +33,12 @@ const Banner = ({ documentId }: BannerProps) => {
     });
   };
 
-  const onRemove = () => {
+  const onRemove = async () => {
+    if (url) {
+      await edgestore.publicFiles.delete({
+        url: url,
+      });
+    }
     const promise = remove({ id: documentId });
 
     toast.promise(promise, {
