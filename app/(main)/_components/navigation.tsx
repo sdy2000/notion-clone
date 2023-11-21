@@ -25,7 +25,7 @@ import {
 import { Item, UserItem, DocumentList, TrashBox, Navbar } from ".";
 import { useSearch, useSettings } from "@/hooks";
 
-const Navigation = React.forwardRef(() => {
+function Navigation() {
   const router = useRouter();
   const search = useSearch();
   const setting = useSettings();
@@ -40,6 +40,22 @@ const Navigation = React.forwardRef(() => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
+  const resetWidth = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(false);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = isMobile ? "100%" : "240px";
+      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+      navbarRef.current.style.setProperty(
+        "width",
+        isMobile ? "0" : "calc(100% - 240px)"
+      );
+
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  };
+
   //#region  Handle Navbar Resizing
 
   useEffect(() => {
@@ -48,7 +64,7 @@ const Navigation = React.forwardRef(() => {
     } else {
       resetWidth();
     }
-  }, [isMobile]);
+  }, [isMobile, resetWidth]);
 
   useEffect(() => {
     if (isMobile) {
@@ -89,22 +105,6 @@ const Navigation = React.forwardRef(() => {
 
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
-  };
-
-  const resetWidth = () => {
-    if (sidebarRef.current && navbarRef.current) {
-      setIsCollapsed(false);
-      setIsResetting(true);
-
-      sidebarRef.current.style.width = isMobile ? "100%" : "240px";
-      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
-      navbarRef.current.style.setProperty(
-        "width",
-        isMobile ? "0" : "calc(100% - 240px)"
-      );
-
-      setTimeout(() => setIsResetting(false), 300);
-    }
   };
 
   const collapse = () => {
@@ -204,5 +204,5 @@ const Navigation = React.forwardRef(() => {
       </div>
     </>
   );
-});
-export default Navigation;
+}
+export default React.forwardRef(Navigation);
